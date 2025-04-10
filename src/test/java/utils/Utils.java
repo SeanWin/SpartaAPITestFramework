@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.time.LocalDate;
 import java.util.Properties;
 
 public class Utils {
@@ -34,6 +35,12 @@ public class Utils {
         FileInputStream fis = new FileInputStream("/Users/seanwinston/AcademyRepos/SpartaAPITestFramework/src/test/java/utils/global.properties");
         prop.load(fis);
         return prop.getProperty(key);
+    }
+
+    public boolean isStartDateBeforeEndDate(String startDate, String endDate) {
+        LocalDate start = LocalDate.parse(startDate.substring(0, 10));
+        LocalDate end = LocalDate.parse(endDate.substring(0, 10));
+        return start.isBefore(end);
     }
 
 }
