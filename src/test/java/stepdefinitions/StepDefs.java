@@ -48,6 +48,11 @@ public class StepDefs extends Utils {
          assertEquals(expectedCode, response.getStatusCode());
     }
 
+    @Then("the response header server is {string}")
+    public void the_response_header_server_is(String expectedServer) {
+        assertEquals(expectedServer, response.header("Server"));
+    }
+
     @Then("the response should contain a list of {int} courses")
     public void the_response_should_contain_a_list_of_courses(Integer expectedNumberOfCourses) {
         courses = response.as(Course[].class);

@@ -9,4 +9,5 @@ Feature: GET all courses
     Given getCourses setup
     When user calls "getCourses" endpoint with "GET" HTTP request
     Then the API call got success with status code 200
+    And the response header server is "Kestrel"
     And the response should contain a list of 5 courses
