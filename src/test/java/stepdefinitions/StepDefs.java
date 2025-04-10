@@ -15,7 +15,7 @@ import utils.Utils;
 import java.io.IOException;
 
 import static io.restassured.RestAssured.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StepDefs extends Utils {
 
@@ -23,6 +23,7 @@ public class StepDefs extends Utils {
     ResponseSpecification resspec;
     Response response;
     Course[] courses;
+    Course course;
 
     @Given("getCourses setup")
     public void get_courses_setup() throws IOException {
@@ -58,4 +59,18 @@ public class StepDefs extends Utils {
         courses = response.as(Course[].class);
         assertEquals(expectedNumberOfCourses, courses.length);
     }
+
+    @Then("the course at index {int} should have name {string}, stream {string}, trainer {string}, {int} spartans, and valid dates")
+    public void the_course_at_index_should_have_full_details(Integer index, String expectedName, String expectedStream, String expectedTrainer, Integer expectedSpartanCount) {
+        course = courses[index];
+
+        assertAll(
+                () -> assertEquals(expectedName, course.getName()),
+                () -> assertEquals(expectedStream, course.getStream()),
+                () -> assertEquals(expectedTrainer, course.getTrainer()),
+                () -> assertEquals(expectedSpartanCount, course.getSpartans().size()),
+                () -> assertTrue(isStartDateBeforeEndDate(course.getStartDate(), course.getEndDate()), "Start date should be before end date")
+        );
+    }
+
 }
