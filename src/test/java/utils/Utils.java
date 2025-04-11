@@ -4,6 +4,8 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 import java.io.FileInputStream;
@@ -41,6 +43,12 @@ public class Utils {
         LocalDate start = LocalDate.parse(startDate.substring(0, 10));
         LocalDate end = LocalDate.parse(endDate.substring(0, 10));
         return start.isBefore(end);
+    }
+
+    public String getJsonPath(Response response, String key) {
+        String resp = response.asString();
+        JsonPath js = new  JsonPath(resp);
+        return js.get(key).toString();
     }
 
 }
