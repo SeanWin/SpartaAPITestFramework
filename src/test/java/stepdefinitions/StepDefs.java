@@ -121,4 +121,9 @@ public class StepDefs extends Utils {
         );
     }
 
+    @Then("{string} in response body is {string}")
+    public void in_response_body_is(String keyValue, String expectedValue) {
+        assertEquals(expectedValue,getJsonPath(response,keyValue));
+    }
+
 }
