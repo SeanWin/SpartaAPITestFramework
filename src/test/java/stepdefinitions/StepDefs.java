@@ -62,8 +62,8 @@ public class StepDefs extends Utils {
         }
     }
 
-    @Then("the API call got success with status code {int}")
-    public void the_api_call_got_success_with_status_code(Integer expectedCode) {
+    @Then("the API responds with status code {int}")
+    public void the_api_responds_with_status_code(Integer expectedCode) {
          assertEquals(expectedCode, response.getStatusCode());
     }
 

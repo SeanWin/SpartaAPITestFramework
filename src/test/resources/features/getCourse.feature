@@ -8,5 +8,5 @@ Feature: GET course by ID
   Scenario: Verify course details returned by valid course ID
     Given getCourses setup
     When user calls "getCourses" endpoint with "GET" HTTP request for course ID 1
-    Then the API call got success with status code 200
+    Then the API responds with status code 200
     And the course should have name "TECH 300", stream "C# Dev", trainer "Phil Windridge", 7 spartans, and valid dates
