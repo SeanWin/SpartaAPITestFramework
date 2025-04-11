@@ -54,18 +54,18 @@ public class StepDefs extends Utils {
     @When("user calls {string} endpoint with {string} HTTP request for course ID {int}")
     public void user_calls_endpoint_with_http_request_for_course_id(String resource, String method, Integer id) {
         APIResources resourcesApi = APIResources.valueOf(resource);
-        String endpoint = resourcesApi.getResource() + "/" + id;
-        System.out.println(endpoint);
+        System.out.println(resourcesApi.getResource().substring(0,13).concat(id.toString()));
+        res = res.pathParam("id", id);
 
         resspec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
         if(method.equalsIgnoreCase("PUT")) {
-            response = res.when().post(endpoint);
+            response = res.when().post(resourcesApi.getResource());
         }
         else if(method.equalsIgnoreCase("GET")) {
-            response = res.when().get(endpoint);
+            response = res.when().get(resourcesApi.getResource());
         }
         else if(method.equalsIgnoreCase("DELETE")) {
-            response = res.when().delete(endpoint);
+            response = res.when().delete(resourcesApi.getResource());
         }
     }
 
