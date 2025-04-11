@@ -8,6 +8,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import pojo.AuthenticationBody;
 import pojo.Course;
 import utils.APIResources;
 import utils.Utils;
@@ -28,6 +29,12 @@ public class StepDefs extends Utils {
     @Given("getCourses setup")
     public void get_courses_setup() throws IOException {
         res = given().spec(requestSpecification());
+    }
+
+    @Given("authentication body payload with username {string} and password {string}")
+    public void authentication_body_payload_with_username_and_password(String username, String password) throws IOException {
+        res = given().spec(requestSpecification())
+                .body(new AuthenticationBody(username, password));
     }
 
     @When("user calls {string} endpoint with {string} HTTP request")
@@ -101,6 +108,16 @@ public class StepDefs extends Utils {
                 () -> assertEquals(expectedTrainer, course.getTrainer()),
                 () -> assertEquals(expectedSpartanCount, course.getSpartans().size()),
                 () -> assertTrue(isStartDateBeforeEndDate(course.getStartDate(), course.getEndDate()), "Start date should be before end date")
+        );
+    }
+
+    @Then("the response contains an authentication token")
+    public void the_response_contains_an_authentication_token() {
+        String token = getJsonPath(response, "token");
+        assertAll(
+                () -> assertNotNull(token),
+                () -> assertFalse(token.isEmpty()),
+                () -> assertEquals(3, token.split("\\.").length)
         );
     }
 
