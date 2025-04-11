@@ -44,6 +44,24 @@ public class StepDefs extends Utils {
         }
     }
 
+    @When("user calls {string} endpoint with {string} HTTP request for course ID {int}")
+    public void user_calls_endpoint_with_http_request_for_course_id(String resource, String method, Integer id) {
+        APIResources resourcesApi = APIResources.valueOf(resource);
+        String endpoint = resourcesApi.getResource() + "/" + id;
+        System.out.println(endpoint);
+
+        resspec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
+        if(method.equalsIgnoreCase("PUT")) {
+            response = res.when().post(endpoint);
+        }
+        else if(method.equalsIgnoreCase("GET")) {
+            response = res.when().get(endpoint);
+        }
+        else if(method.equalsIgnoreCase("DELETE")) {
+            response = res.when().delete(endpoint);
+        }
+    }
+
     @Then("the API call got success with status code {int}")
     public void the_api_call_got_success_with_status_code(Integer expectedCode) {
          assertEquals(expectedCode, response.getStatusCode());
@@ -63,6 +81,19 @@ public class StepDefs extends Utils {
     @Then("the course at index {int} should have name {string}, stream {string}, trainer {string}, {int} spartans, and valid dates")
     public void the_course_at_index_should_have_full_details(Integer index, String expectedName, String expectedStream, String expectedTrainer, Integer expectedSpartanCount) {
         course = courses[index];
+
+        assertAll(
+                () -> assertEquals(expectedName, course.getName()),
+                () -> assertEquals(expectedStream, course.getStream()),
+                () -> assertEquals(expectedTrainer, course.getTrainer()),
+                () -> assertEquals(expectedSpartanCount, course.getSpartans().size()),
+                () -> assertTrue(isStartDateBeforeEndDate(course.getStartDate(), course.getEndDate()), "Start date should be before end date")
+        );
+    }
+
+    @Then("the course should have name {string}, stream {string}, trainer {string}, {int} spartans, and valid dates")
+    public void the_course_should_have_name_stream_trainer_spartans_and_valid_dates(String expectedName, String expectedStream, String expectedTrainer, Integer expectedSpartanCount) {
+        course = response.as(Course.class);
 
         assertAll(
                 () -> assertEquals(expectedName, course.getName()),
