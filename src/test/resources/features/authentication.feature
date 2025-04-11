@@ -11,3 +11,11 @@ Feature: User Authentication
     Then the API responds with status code 200
     And the response header server is "Kestrel"
     And the response contains an authentication token
+
+  @Sad
+  Scenario: Unsuccessful login with invalid credentials
+    Given authentication body payload with username "username" and password "password"
+    When user calls "authentication" endpoint with "POST" HTTP request
+    Then the API responds with status code 401
+    And the response header server is "Kestrel"
+    And "title" in response body is "Unauthorized"
