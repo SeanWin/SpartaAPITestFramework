@@ -12,7 +12,7 @@ jobs:
 
     services:
       api:
-        image: seanwin/spartaacademyapi:latest
+        image: seanwin/spartaacademyapi:ci
         ports:
           - 8080:8080
 
