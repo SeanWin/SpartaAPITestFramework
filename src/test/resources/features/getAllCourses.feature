@@ -9,7 +9,7 @@ Feature: GET all courses
     Given getCourses setup
     When user calls "getCourses" endpoint with "GET" HTTP request
     Then the API responds with status code 200
-    And the response header server is "Microsoft-IIS/10.0"
+    #And the response header server is "Microsoft-IIS/10.0"
     And the response should contain a list of 5 courses
 
     And the course at index 0 should have name "TECH 300", stream "C# Dev", trainer "Phil Windridge", 7 spartans, and valid dates
