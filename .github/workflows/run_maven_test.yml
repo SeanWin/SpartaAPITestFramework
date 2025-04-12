@@ -22,17 +22,16 @@ jobs:
 
       - name: Build and test with Maven
         run: mvn -B clean verify --file pom.xml
-        working-directory: SpartaAPITestFramework
 
       - name: Upload Cucumber HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: cucumber-html-report
-          path: SpartaAPITestFramework/target/cucumber-html-reports/
+          path: target/cucumber-html-reports/
 
       # Optional: Upload Surefire reports
       - name: Upload surefire test reports
         uses: actions/upload-artifact@v4
         with:
           name: surefire-report
-          path: SpartaAPITestFramework/target/surefire-reports/
+          path: target/surefire-reports/
