@@ -10,7 +10,9 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import pojo.AuthenticationBody;
 import pojo.Course;
+import pojo.Spartan;
 import utils.APIResources;
+import utils.TestTokens;
 import utils.Utils;
 
 import java.io.IOException;
@@ -25,6 +27,9 @@ public class StepDefs extends Utils {
     Response response;
     Course[] courses;
     Course course;
+    static String token;
+    Spartan[] spartans;
+    Spartan spartan;
 
     @Given("getCourses setup")
     public void get_courses_setup() throws IOException {
@@ -35,6 +40,23 @@ public class StepDefs extends Utils {
     public void authentication_body_payload_with_username_and_password(String username, String password) throws IOException {
         res = given().spec(requestSpecification())
                 .body(new AuthenticationBody(username, password));
+    }
+
+    @Given("spartan endpoint is up and user is authenticated")
+    public void spartan_endpoint_is_up_and_user_is_authenticated() throws IOException {
+       res = given().spec(requestSpecification()).header("Authorization", "Bearer " + token);
+    }
+
+    @Given("user uses an {string} token")
+    public void user_uses_an_token(String tokenType) throws IOException {
+        String invalidToken = switch (tokenType) {
+            case "invalid" -> TestTokens.invalid.getToken();
+            case "wrong_signature" -> TestTokens.wrong_signature.getToken();
+            case "expired" -> TestTokens.expired.getToken();
+            default -> throw new IllegalArgumentException("Unknown token type: " + tokenType);
+        };
+
+        res = given().spec(requestSpecification()).header("Authorization", "Bearer " + invalidToken);
     }
 
     @When("user calls {string} endpoint with {string} HTTP request")
@@ -55,7 +77,7 @@ public class StepDefs extends Utils {
     public void user_calls_endpoint_with_http_request_for_course_id(String resource, String method, Integer id) {
         APIResources resourcesApi = APIResources.valueOf(resource);
         System.out.println(resourcesApi.getResource().substring(0,13).concat(id.toString()));
-        res = res.pathParam("id", id);
+        res.pathParam("id", id);
 
         resspec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
         if(method.equalsIgnoreCase("PUT")) {
@@ -113,7 +135,7 @@ public class StepDefs extends Utils {
 
     @Then("the response contains an authentication token")
     public void the_response_contains_an_authentication_token() {
-        String token = getJsonPath(response, "token");
+        token = getJsonPath(response, "token");
         assertAll(
                 () -> assertNotNull(token),
                 () -> assertFalse(token.isEmpty()),
@@ -124,6 +146,31 @@ public class StepDefs extends Utils {
     @Then("{string} in response body is {string}")
     public void in_response_body_is(String keyValue, String expectedValue) {
         assertEquals(expectedValue,getJsonPath(response,keyValue));
+    }
+
+    @Then("the response should contain a list of {int} spartans")
+    public void the_response_should_contain_a_list_of_spartans(Integer expectedNumberOfSpartans) {
+        spartans = response.as(Spartan[].class);
+        assertEquals(expectedNumberOfSpartans, spartans.length);
+    }
+
+    @Then("the spartan at index {int} should have first name {string}, last name {string}, university {string}, degree {string}, course {string}, stream {string}, and graduated {string}")
+    public void the_spartan_at_index_should_have_first_name_last_name_university_degree_course_stream_and_graduated(Integer index, String expectedFirstName, String expectedLastName, String expectedUniversity, String expectedDegree, String expectedCourse, String expectedStream, String expectedGraduated) {
+        spartan = spartans[index];
+        assertAll(
+                () -> assertEquals(expectedFirstName, spartan.getFirstName()),
+                () -> assertEquals(expectedLastName, spartan.getLastName()),
+                () -> assertEquals(expectedUniversity, spartan.getUniversity()),
+                () -> assertEquals(expectedDegree, spartan.getDegree()),
+                () -> assertEquals(expectedCourse, spartan.getCourse()),
+                () -> assertEquals(expectedStream, spartan.getStream()),
+                () -> assertEquals(parseBoolean(expectedGraduated), spartan.isGraduated())
+        );
+    }
+
+    @Then("the response header {string} contains {string}")
+    public void the_response_header_contains(String headerKey, String headerValue) {
+        assertTrue(response.header(headerKey).contains(headerValue));
     }
 
 }

@@ -38,4 +38,25 @@ class UtilsTest {
         assertFalse(utils.isStartDateBeforeEndDate(start, end));
     }
 
+    @Test
+    void returnsTrueForTrueStrings() {
+        assertTrue(utils.parseBoolean("true"));
+        assertTrue(utils.parseBoolean("TRUE"));
+        assertTrue(utils.parseBoolean("TrUe"));
+    }
+
+    @Test
+    void returnsFalseForFalseStrings() {
+        assertFalse(utils.parseBoolean("false"));
+        assertFalse(utils.parseBoolean("FALSE"));
+        assertFalse(utils.parseBoolean("FaLsE"));
+    }
+
+    @Test
+    void returnsFalseForInvalidStrings() {
+        assertFalse(utils.parseBoolean("yes"));
+        assertFalse(utils.parseBoolean("no"));
+        assertFalse(utils.parseBoolean("1"));
+    }
+
 }
