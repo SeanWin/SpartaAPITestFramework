@@ -12,6 +12,7 @@ import pojo.AuthenticationBody;
 import pojo.Course;
 import pojo.Spartan;
 import utils.APIResources;
+import utils.TestTokens;
 import utils.Utils;
 
 import java.io.IOException;
@@ -44,6 +45,18 @@ public class StepDefs extends Utils {
     @Given("spartan endpoint is up and user is authenticated")
     public void spartan_endpoint_is_up_and_user_is_authenticated() throws IOException {
        res = given().spec(requestSpecification()).header("Authorization", "Bearer " + token);
+    }
+
+    @Given("user uses an {string} token")
+    public void user_uses_an_token(String tokenType) throws IOException {
+        String invalidToken = switch (tokenType) {
+            case "invalid" -> TestTokens.invalid.getToken();
+            case "wrong_signature" -> TestTokens.wrong_signature.getToken();
+            case "expired" -> TestTokens.expired.getToken();
+            default -> throw new IllegalArgumentException("Unknown token type: " + tokenType);
+        };
+
+        res = given().spec(requestSpecification()).header("Authorization", "Bearer " + invalidToken);
     }
 
     @When("user calls {string} endpoint with {string} HTTP request")
@@ -153,6 +166,11 @@ public class StepDefs extends Utils {
                 () -> assertEquals(expectedStream, spartan.getStream()),
                 () -> assertEquals(parseBoolean(expectedGraduated), spartan.isGraduated())
         );
+    }
+
+    @Then("the response header {string} contains {string}")
+    public void the_response_header_contains(String headerKey, String headerValue) {
+        assertTrue(response.header(headerKey).contains(headerValue));
     }
 
 }
