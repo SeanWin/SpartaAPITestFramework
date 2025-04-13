@@ -28,6 +28,7 @@ public class StepDefs extends Utils {
     Course course;
     static String token;
     Spartan[] spartans;
+    Spartan spartan;
 
     @Given("getCourses setup")
     public void get_courses_setup() throws IOException {
@@ -138,6 +139,20 @@ public class StepDefs extends Utils {
     public void the_response_should_contain_a_list_of_spartans(Integer expectedNumberOfSpartans) {
         spartans = response.as(Spartan[].class);
         assertEquals(expectedNumberOfSpartans, spartans.length);
+    }
+
+    @Then("the spartan at index {int} should have first name {string}, last name {string}, university {string}, degree {string}, course {string}, stream {string}, and graduated {string}")
+    public void the_spartan_at_index_should_have_first_name_last_name_university_degree_course_stream_and_graduated(Integer index, String expectedFirstName, String expectedLastName, String expectedUniversity, String expectedDegree, String expectedCourse, String expectedStream, String expectedGraduated) {
+        spartan = spartans[index];
+        assertAll(
+                () -> assertEquals(expectedFirstName, spartan.getFirstName()),
+                () -> assertEquals(expectedLastName, spartan.getLastName()),
+                () -> assertEquals(expectedUniversity, spartan.getUniversity()),
+                () -> assertEquals(expectedDegree, spartan.getDegree()),
+                () -> assertEquals(expectedCourse, spartan.getCourse()),
+                () -> assertEquals(expectedStream, spartan.getStream()),
+                () -> assertEquals(parseBoolean(expectedGraduated), spartan.isGraduated())
+        );
     }
 
 }
