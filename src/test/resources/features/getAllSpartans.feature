@@ -11,4 +11,4 @@ Feature: GET all Spartans
     When user calls "spartan" endpoint with "GET" HTTP request
     Then the API responds with status code 200
     And the response header server is "Kestrel"
-    #And the response should contain a list of 5 spartans
+    And the response should contain a list of 33 spartans

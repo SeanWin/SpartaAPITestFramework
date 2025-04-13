@@ -10,6 +10,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import pojo.AuthenticationBody;
 import pojo.Course;
+import pojo.Spartan;
 import utils.APIResources;
 import utils.Utils;
 
@@ -26,6 +27,7 @@ public class StepDefs extends Utils {
     Course[] courses;
     Course course;
     static String token;
+    Spartan[] spartans;
 
     @Given("getCourses setup")
     public void get_courses_setup() throws IOException {
@@ -130,6 +132,12 @@ public class StepDefs extends Utils {
     @Then("{string} in response body is {string}")
     public void in_response_body_is(String keyValue, String expectedValue) {
         assertEquals(expectedValue,getJsonPath(response,keyValue));
+    }
+
+    @Then("the response should contain a list of {int} spartans")
+    public void the_response_should_contain_a_list_of_spartans(Integer expectedNumberOfSpartans) {
+        spartans = response.as(Spartan[].class);
+        assertEquals(expectedNumberOfSpartans, spartans.length);
     }
 
 }
