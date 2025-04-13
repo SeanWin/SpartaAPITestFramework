@@ -51,4 +51,8 @@ public class Utils {
         return js.get(key).toString();
     }
 
+    public boolean parseBoolean(String value) {
+        return Boolean.parseBoolean(value.toLowerCase());
+    }
+
 }
