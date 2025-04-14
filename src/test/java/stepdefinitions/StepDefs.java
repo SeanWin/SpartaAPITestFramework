@@ -209,4 +209,10 @@ public class StepDefs extends Utils {
         );
     }
 
+    @Then("the validation error for {string} at index {int} should be {string}")
+    public void the_validation_error_for_at_index_should_be(String key, Integer index, String expectedError) {
+        String actualError = getNestedJsonError(response, key, index);
+        assertEquals(expectedError, actualError);
+    }
+
 }
