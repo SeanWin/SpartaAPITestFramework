@@ -12,6 +12,7 @@ import pojo.AuthenticationBody;
 import pojo.Course;
 import pojo.Spartan;
 import utils.APIResources;
+import utils.TestDataBuild;
 import utils.TestTokens;
 import utils.Utils;
 
@@ -30,6 +31,8 @@ public class StepDefs extends Utils {
     static String token;
     Spartan[] spartans;
     Spartan spartan;
+    TestDataBuild data =  new TestDataBuild();
+    static int createdSpartanId;
 
     @Given("getCourses setup")
     public void get_courses_setup() throws IOException {
@@ -57,6 +60,11 @@ public class StepDefs extends Utils {
         };
 
         res = given().spec(requestSpecification()).header("Authorization", "Bearer " + invalidToken);
+    }
+
+    @Given("spartan payload with  first name {string} last name {string} course stream name {string} and rest valid fields")
+    public void spartan_payload_with_first_name_last_name_course_stream_name_and_rest_valid_fields(String firstName, String lastName, String streamName) {
+        res.body(data.createSpartanPayload(firstName, lastName, streamName));
     }
 
     @When("user calls {string} endpoint with {string} HTTP request")
@@ -184,6 +192,20 @@ public class StepDefs extends Utils {
                 () -> assertEquals(expectedCourse, spartan.getCourse()),
                 () -> assertEquals(expectedStream, spartan.getStream()),
                 () -> assertEquals(parseBoolean(expectedGraduated), spartan.isGraduated())
+        );
+    }
+
+    @Then("verify with getAllSpartans that the last spartan has first name {string} last name {string} course stream name {string}")
+    public void verify_with_get_all_spartans_that_the_last_spartan_has_first_name_last_name_course_stream_name(String expectedFirstName, String expectedLastName, String expectedStreamName) throws IOException {
+        spartan_endpoint_is_up_and_user_is_authenticated();
+        user_calls_endpoint_with_http_request("spartan","GET");
+        spartans = response.as(Spartan[].class);
+        spartan = spartans[spartans.length - 1];
+        createdSpartanId = spartan.getId();
+        assertAll(
+                () -> assertEquals(expectedFirstName, spartan.getFirstName()),
+                () -> assertEquals(expectedLastName, spartan.getLastName()),
+                () -> assertEquals(expectedStreamName, spartan.getStream())
         );
     }
 
