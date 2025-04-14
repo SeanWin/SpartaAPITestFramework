@@ -55,4 +55,10 @@ public class Utils {
         return Boolean.parseBoolean(value.toLowerCase());
     }
 
+    public String getNestedJsonError(Response response, String key, int index) {
+        String resp = response.asString();
+        JsonPath js = new JsonPath(resp);
+        return js.get("errors['" + key + "'][" + index + "]").toString();
+    }
+
 }
