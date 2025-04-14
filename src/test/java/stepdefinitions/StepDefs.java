@@ -195,14 +195,16 @@ public class StepDefs extends Utils {
         );
     }
 
-    @Then("verify with getAllSpartans that the last spartan has first name {string} last name {string} course stream name {string}")
-    public void verify_with_get_all_spartans_that_the_last_spartan_has_first_name_last_name_course_stream_name(String expectedFirstName, String expectedLastName, String expectedStreamName) throws IOException {
+    @Then("the API responds with status code {int} and verify with getAllSpartans that the last spartan has first name {string} last name {string} course stream name {string}")
+    public void verify_status_code_and_last_spartan_fields(int expectedStatusCode, String expectedFirstName, String expectedLastName, String expectedStreamName) throws IOException {
+        int actualStatusCode = response.getStatusCode();
         spartan_endpoint_is_up_and_user_is_authenticated();
         user_calls_endpoint_with_http_request("spartan","GET");
         spartans = response.as(Spartan[].class);
         spartan = spartans[spartans.length - 1];
         createdSpartanId = spartan.getId();
         assertAll(
+                () -> assertEquals(expectedStatusCode, actualStatusCode),
                 () -> assertEquals(expectedFirstName, spartan.getFirstName()),
                 () -> assertEquals(expectedLastName, spartan.getLastName()),
                 () -> assertEquals(expectedStreamName, spartan.getStream())
