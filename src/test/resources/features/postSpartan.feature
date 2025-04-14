@@ -11,8 +11,7 @@ Feature: Create Spartan
     Given spartan endpoint is up and user is authenticated
     And spartan payload with  first name "firstName" last name "lastName" course stream name "C# Test" and rest valid fields
     When user calls "spartan" endpoint with "POST" HTTP request
-    Then the API responds with status code 500
-    And verify with getAllSpartans that the last spartan has first name "firstName" last name "lastName" course stream name "C# Test"
+    Then the API responds with status code 201 and verify with getAllSpartans that the last spartan has first name "firstName" last name "lastName" course stream name "C# Test"
 
   @TokenRequired
   @Sad
