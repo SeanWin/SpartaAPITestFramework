@@ -3,6 +3,8 @@ package pojo;
 public class CourseRequest {
     private Stream stream;
     private String trainer;
+    private String startDate;
+    private String endDate;
     private String name;
     private int id;
 
@@ -20,6 +22,22 @@ public class CourseRequest {
 
     public String getTrainer(){
         return trainer;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public void setName(String name){
