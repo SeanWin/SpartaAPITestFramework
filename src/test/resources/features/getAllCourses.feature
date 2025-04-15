@@ -6,7 +6,7 @@ Feature: GET all courses
 
   @GetAllCourses
   Scenario: verify if get all courses is working
-    Given getCourses setup
+    Given courses endpoint is up
     When user calls "getCourses" endpoint with "GET" HTTP request
     Then the API responds with status code 200
     And the response header server is "Kestrel"
