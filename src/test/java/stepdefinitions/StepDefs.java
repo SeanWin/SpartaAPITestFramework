@@ -67,6 +67,17 @@ public class StepDefs extends Utils {
         res.body(data.createSpartanPayload(firstName, lastName, streamName));
     }
 
+    @Given("user called {string} endpoint with {string} method and created spartan with ID {int} first name {string} last name {string} course stream name {string} and rest valid fields")
+    public void user_called_endpoint_with_method_and_created_spartan_with_id_first_name_last_name_course_stream_name_and_rest_valid_fields(String resource, String method, Integer int1, String firstName, String lastName, String streamName) {
+        spartan_payload_with_first_name_last_name_course_stream_name_and_rest_valid_fields(firstName, lastName, streamName);
+        user_calls_endpoint_with_http_request(resource, method);
+    }
+
+    @Given("spartan payload with id {int} first name {string} last name {string} course stream name {string} and rest valid fields")
+    public void spartan_payload_with_id_first_name_last_name_course_stream_name_and_rest_valid_fields(int id, String firstName, String lastName, String streamName) {
+        res.body(data.createSpartanPayload(id, firstName, lastName, streamName));
+    }
+
     @When("user calls {string} endpoint with {string} HTTP request")
     public void user_calls_endpoint_with_http_request(String resource, String method) {
         APIResources resourcesApi = APIResources.valueOf(resource);
@@ -89,7 +100,7 @@ public class StepDefs extends Utils {
 
         resspec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
         if(method.equalsIgnoreCase("PUT")) {
-            response = res.when().post(resourcesApi.getResource());
+            response = res.when().put(resourcesApi.getResource());
         }
         else if(method.equalsIgnoreCase("GET")) {
             response = res.when().get(resourcesApi.getResource());
@@ -215,6 +226,19 @@ public class StepDefs extends Utils {
     public void the_validation_error_for_at_index_should_be(String key, Integer index, String expectedError) {
         String actualError = getNestedJsonError(response, key, index);
         assertEquals(expectedError, actualError);
+    }
+
+    @Then("verify with getSpartan the spartan at ID {int} has first name {string} last name {string} course stream name {string}")
+    public void verify_with_get_spartan_the_spartan_at_id_has_first_name_last_name_course_stream_name(Integer id, String expectedFirstName, String expectedLastName, String expectedStreamName) throws IOException {
+        spartan_endpoint_is_up_and_user_is_authenticated();
+        user_calls_endpoint_with_http_request_for_course_id("spartanById","GET", id);
+        spartan = response.as(Spartan.class);
+        createdSpartanId = id;
+        assertAll(
+                () -> assertEquals(expectedFirstName, spartan.getFirstName()),
+                () -> assertEquals(expectedLastName, spartan.getLastName()),
+                () -> assertEquals(expectedStreamName, spartan.getStream())
+        );
     }
 
 }
