@@ -34,8 +34,8 @@ public class StepDefs extends Utils {
     TestDataBuild data =  new TestDataBuild();
     static int createdSpartanId;
 
-    @Given("getCourses setup")
-    public void get_courses_setup() throws IOException {
+    @Given("courses endpoint is up")
+    public void courses_endpoint_is_up() throws IOException {
         res = given().spec(requestSpecification());
     }
 
@@ -92,8 +92,8 @@ public class StepDefs extends Utils {
         }
     }
 
-    @When("user calls {string} endpoint with {string} HTTP request for course ID {int}")
-    public void user_calls_endpoint_with_http_request_for_course_id(String resource, String method, Integer id) {
+    @When("user calls {string} endpoint with {string} HTTP request for ID {int}")
+    public void user_calls_endpoint_with_http_request_for_id(String resource, String method, Integer id) {
         APIResources resourcesApi = APIResources.valueOf(resource);
         System.out.println(resourcesApi.getResource().substring(0,13).concat(id.toString()));
         res.pathParam("id", id);
@@ -231,7 +231,7 @@ public class StepDefs extends Utils {
     @Then("verify with getSpartan the spartan at ID {int} has first name {string} last name {string} course stream name {string}")
     public void verify_with_get_spartan_the_spartan_at_id_has_first_name_last_name_course_stream_name(Integer id, String expectedFirstName, String expectedLastName, String expectedStreamName) throws IOException {
         spartan_endpoint_is_up_and_user_is_authenticated();
-        user_calls_endpoint_with_http_request_for_course_id("spartanById","GET", id);
+        user_calls_endpoint_with_http_request_for_id("spartanById","GET", id);
         spartan = response.as(Spartan.class);
         createdSpartanId = id;
         assertAll(
