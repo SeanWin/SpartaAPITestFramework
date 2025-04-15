@@ -34,8 +34,8 @@ public class StepDefs extends Utils {
     TestDataBuild data =  new TestDataBuild();
     static int createdSpartanId;
 
-    @Given("getCourses setup")
-    public void get_courses_setup() throws IOException {
+    @Given("courses endpoint is up")
+    public void courses_endpoint_is_up() throws IOException {
         res = given().spec(requestSpecification());
     }
 
