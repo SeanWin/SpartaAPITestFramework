@@ -21,6 +21,6 @@ public class Hooks {
     public void afterScenario() throws IOException {
         StepDefs m = new StepDefs();
         m.spartan_endpoint_is_up_and_user_is_authenticated();
-        m.user_calls_endpoint_with_http_request_for_course_id("spartanById","DELETE",StepDefs.createdSpartanId);
+        m.user_calls_endpoint_with_http_request_for_id("spartanById","DELETE",StepDefs.createdSpartanId);
     }
 }
