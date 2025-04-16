@@ -7,13 +7,17 @@ Feature: Update Spartan
   @DeleteSpartanAfter
   @TokenRequired
   @Happy
-  Scenario: Successfully update an existing Spartan with valid details
+  Scenario Outline: Successfully update an existing Spartan with valid details
     Given spartan endpoint is up and user is authenticated
-    And user called "spartan" endpoint with "POST" method and created spartan with ID 34 first name "firstName" last name "lastName" course stream name "C# Test" and rest valid fields
-    And spartan payload with  first name "updatedFirstName" last name "updatedLastName" course stream name "C# Test" and rest valid fields
-    When user calls "spartanById" endpoint with "PUT" HTTP request for ID 34
+    And user called "spartan" endpoint with "POST" method and created spartan with ID <id> first name "<firstName>" last name "<lastName>" course stream name "<streamName>" and rest valid fields
+    And spartan payload with id <id> first name "<updatedFirstName>" last name "<updatedLastName>" course stream name "<updatedStreamName>" and rest valid fields
+    When user calls "spartanById" endpoint with "PUT" HTTP request for ID <id>
     Then the API responds with status code 204
-    And verify with getSpartan the spartan at ID 34 has first name "updatedFirstName" last name "updatedLastName" course stream name "C# Test"
+    And verify with getSpartan the spartan at ID <id> has first name "<updatedFirstName>" last name "<updatedLastName>" course stream name "<updatedStreamName>"
+    Examples:
+      | id | firstName | lastName | streamName | updatedFirstName | updatedLastName | updatedStreamName |
+      |34  |firstName  |lastName  |C# Test     |updatedFirstName  | updatedLastName | C# Test           |
+      |35  |firstName  |lastName  |DevOps      |Jonathan          | Williams        | C# Dev            |
 
   @TokenRequired
   @Sad

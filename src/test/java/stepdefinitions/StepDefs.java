@@ -68,8 +68,8 @@ public class StepDefs extends Utils {
     }
 
     @Given("user called {string} endpoint with {string} method and created spartan with ID {int} first name {string} last name {string} course stream name {string} and rest valid fields")
-    public void user_called_endpoint_with_method_and_created_spartan_with_id_first_name_last_name_course_stream_name_and_rest_valid_fields(String resource, String method, Integer int1, String firstName, String lastName, String streamName) {
-        spartan_payload_with_first_name_last_name_course_stream_name_and_rest_valid_fields(firstName, lastName, streamName);
+    public void user_called_endpoint_with_method_and_created_spartan_with_id_first_name_last_name_course_stream_name_and_rest_valid_fields(String resource, String method, Integer id, String firstName, String lastName, String streamName) {
+        spartan_payload_with_id_first_name_last_name_course_stream_name_and_rest_valid_fields(id, firstName, lastName, streamName);
         user_calls_endpoint_with_http_request(resource, method);
     }
 
