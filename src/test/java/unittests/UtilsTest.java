@@ -1,10 +1,11 @@
 package unittests;
 
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import utils.Utils;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UtilsTest {
 
@@ -57,6 +58,36 @@ class UtilsTest {
         assertFalse(utils.parseBoolean("yes"));
         assertFalse(utils.parseBoolean("no"));
         assertFalse(utils.parseBoolean("1"));
+    }
+
+    @Test
+    public void testGetJsonPath() {
+        String mockJson = "{ \"status\": \"OK\", \"id\": 123 }";
+
+        Response response = Mockito.mock(Response.class);
+        Mockito.when(response.asString()).thenReturn(mockJson);
+
+        String status = utils.getJsonPath(response, "status");
+        String id = utils.getJsonPath(response, "id");
+
+        assertEquals("OK", status);
+        assertEquals("123", id);
+    }
+
+    @Test
+    public void testGetNestedJsonError() {
+        String mockJson = "{ \"errors\": { \"Course.Stream.Name\": [ " +
+                "\"The Name field is required.\"," +
+                "\"The field Name must be a string with a minimum length of 6 and a maximum length of 50.\" ] } }";
+
+        Response response = Mockito.mock(Response.class);
+        Mockito.when(response.asString()).thenReturn(mockJson);
+
+        String firstError = utils.getNestedJsonError(response, "Course.Stream.Name", 0);
+        String secondError = utils.getNestedJsonError(response, "Course.Stream.Name", 1);
+
+        assertEquals("The Name field is required.", firstError);
+        assertEquals("The field Name must be a string with a minimum length of 6 and a maximum length of 50.", secondError);
     }
 
 }
