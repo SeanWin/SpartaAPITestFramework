@@ -5,7 +5,7 @@ Feature: GET all Spartans
   So that I can verify that the data is complete and correct
 
   @TokenRequired
-  @GetAllSpartans
+  @Happy
   Scenario: Retrieve and validate the Spartans list
     Given spartan endpoint is up and user is authenticated
     When user calls "spartan" endpoint with "GET" HTTP request
