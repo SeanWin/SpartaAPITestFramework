@@ -4,7 +4,7 @@ Feature: GET all courses
   I want to retrieve a list of all available courses
   So that I can view their details including stream, trainer, dates, and Spartans
 
-  @GetAllCourses
+  @Happy
   Scenario: verify if get all courses is working
     Given courses endpoint is up
     When user calls "getCourses" endpoint with "GET" HTTP request
