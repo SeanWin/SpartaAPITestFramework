@@ -148,3 +148,6 @@ F --> F8[putSpartan.feature]
 All defects I found have been noted down as a defect report in the `defects/` folder. If 
 you find anymore, please log them following the naming convention and use the existing reports as examples.
 
+## Useful Links 
+[Scrum board](https://trello.com/b/4YiRcfaJ/scrum-board-for-spartaacademyapi-testing-project)
+
