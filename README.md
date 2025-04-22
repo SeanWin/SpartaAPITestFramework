@@ -149,5 +149,6 @@ All defects I found have been noted down as a defect report in the `defects/` fo
 you find anymore, please log them following the naming convention and use the existing reports as examples.
 
 ## Useful Links 
-[Scrum board](https://trello.com/b/4YiRcfaJ/scrum-board-for-spartaacademyapi-testing-project)
+- [Scrum board](https://trello.com/b/4YiRcfaJ/scrum-board-for-spartaacademyapi-testing-project)
+- [PowerPoint presentation](https://testingcircle-my.sharepoint.com/:p:/r/personal/swinston_spartaglobal_com/_layouts/15/Doc.aspx?sourcedoc=%7B9A563982-6612-4758-A3BD-60E0ECE27B4F%7D&file=Presentation.pptx&action=edit&mobileredirect=true&DefaultItemOpen=1&wdOrigin=MARKETING.POWERPOINT.SIGNIN%2CAPPHOME-WEB.FILEBROWSER.RECENT&wdPreviousSession=adc5d9e0-cf66-4713-a657-b69a983f1292&wdPreviousSessionSrc=AppHomeWeb&ct=1744912057729)
 
